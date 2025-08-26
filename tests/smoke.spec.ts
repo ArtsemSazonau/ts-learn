@@ -4,3 +4,8 @@ test('opens homepage and checks title', async ({ page }) => {
     await page.goto('https://example.com/');
     await expect(page).toHaveTitle(/Example Domain/);
 });
+
+test('failed test, check URL', async ({ page }) => {
+    await page.goto('https://example.com/');
+    await expect(page).toHaveURL('https://playwright.dev/docs/intro');
+});
