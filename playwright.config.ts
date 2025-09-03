@@ -35,7 +35,7 @@ export default defineConfig({
   use: {
     baseURL: 'https://example.com',
     headless: true,
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     /* Base URL to use in actions like `await page.goto('/')`. */
