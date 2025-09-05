@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { JiraClient } from '../helpers/jiraClient';
+import { jiraData } from '../data/jiraData';
 
 
 let jiraUser: any;
@@ -27,13 +28,13 @@ test('Jauthorizes in Jira', async ({ request }) => {
 
 test('retrieves JQL from Jira filter', async ({ request }) => {
     const jiraClient = new JiraClient(request);
-    const filterId = process.env.JIRA_FILTER_ID!;
+    const filterId = jiraData.allBugsFilter;
     const response = await jiraClient.getFilter(filterId);
 
     expect(response.ok()).toBeTruthy();
 
     const filter = await response.json();
-    filterJQL = filter.searchUrl;
+    filterJQL = filter.jql;
 
     console.log('✅ JQL retrieved:', filterJQL);
     expect(filterJQL).toBeTruthy();
