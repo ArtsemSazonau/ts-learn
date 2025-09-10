@@ -5,6 +5,7 @@ import { jiraData } from '../data/jiraData';
 
 let jiraUser: any;
 let filterJQL: string;
+let allIssues: any [] = [];
 
 
 
@@ -41,9 +42,22 @@ test('retrieves JQL from Jira filter', async ({ request }) => {
 
 });
 
-test.skip('fetches all issues from Jira with pagination', async ({ request }) => {
-    await request.goto('/');
-    await expect(request).toHaveURL('https://playwright.dev/docs/intro');
+test('fetches all issues from Jira', async ({ request }) => {
+  const jiraClient = new JiraClient(request);
+
+  // JQL берём из предыдущего теста, но можно и напрямую
+  const jql = `filter=${jiraData.allBugsFilter}`;
+  const fields = [jiraData.customFields.platform, jiraData.customFields.priority];
+
+  allIssues = await jiraClient.getAllIssues(jql, fields);
+
+  console.log(`✅ Retrieved ${allIssues.length} issues`);
+  expect(allIssues.length).toBeGreaterThan(0);
+
+  // Пример проверки: каждая issue должна содержать priority
+  for (const issue of allIssues) {
+    expect(issue.fields.priority).toBeTruthy();
+  }
 });
 
 test.skip('counts bugs grouped by platform', async ({ request }) => {
